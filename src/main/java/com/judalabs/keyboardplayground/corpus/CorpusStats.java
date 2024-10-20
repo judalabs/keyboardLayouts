@@ -2,23 +2,31 @@ package com.judalabs.keyboardplayground.corpus;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 @Builder
 @Getter
-@ToString
 public class CorpusStats {
 
     private String id;
 
     private Language language;
 
-    private Long wordCount;
-
     private List<LetterCount> letterCounts;
 
     private Long words;
-    private double sfb;
+
+    private String results;
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", CorpusStats.class.getSimpleName() + "[", "]")
+                .add("language=" + language)
+                .add("words=" + words)
+                .add("letterCounts=" + letterCounts)
+                .add("\nresults=\n'" + results + "'")
+                .toString();
+    }
 }

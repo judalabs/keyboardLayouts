@@ -1,26 +1,21 @@
 package com.judalabs.keyboardplayground;
 
 import com.judalabs.keyboardplayground.corpus.LetterCount;
-import com.judalabs.keyboardplayground.metrics.ProducesMetrics;
+import com.judalabs.keyboardplayground.metrics.CollectorEventManager;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CorpusStatsCollector {
 
-    private final Comparator<LetterCount> comparator = Comparator
-            .comparingDouble(LetterCount::frequency)
-            .reversed();
-    private final List<ProducesMetrics> metricProducers;
+    private final CollectorEventManager collectorEventManager = new CollectorEventManager();
 
     private Long words = 0L;
-    private Map<Integer, Long> letterCount = new HashMap<>();
+    private final Map<Integer, Long> letterCount = new HashMap<>();
     private Long totalLetters = 0L;
 
-    public CorpusStatsCollector(List<ProducesMetrics> producers) {
-        metricProducers = producers;
+    public CorpusStatsCollector() {
         for (int letter = ' '; letter <= 'z'; letter++) {
             letterCount.put(letter, 0L);
         }
@@ -29,9 +24,9 @@ public class CorpusStatsCollector {
     public void receive(int elem) {
         if (' ' == elem) {
             words++;
-            metricProducers.reset();
+            collectorEventManager.notifyNewWord();
         } else {
-            metricProducers.compute(elem);
+            collectorEventManager.compute(elem);
         }
         final Long count = letterCount.get(elem) + 1;
         letterCount.put(elem, count);
@@ -39,7 +34,6 @@ public class CorpusStatsCollector {
     }
 
     public Long getWords() {
-        System.out.println(metricProducers.resultAll());
         return words > 0 ? words + 1 : 0;
     }
 
@@ -47,7 +41,7 @@ public class CorpusStatsCollector {
         return letterCount.entrySet()
                 .stream().filter(entry -> entry.getValue() > 0)
                 .map(this::toLetterCount)
-                .sorted(comparator)
+                .sorted()
                 .toList();
     }
 
@@ -55,10 +49,10 @@ public class CorpusStatsCollector {
         final char letter = (char) entry.getKey().intValue();
         final Long countLetter = entry.getValue();
 
-        return new LetterCount(letter, countLetter, (double) countLetter / totalLetters);
+        return new LetterCount(letter, countLetter, (double) countLetter / totalLetters * 100);
     }
 
-    public double sfb() {
-        return metricProducers.result(totalLetters);
+    public String getResults() {
+        return collectorEventManager.getResultsFromListeners(totalLetters);
     }
 }

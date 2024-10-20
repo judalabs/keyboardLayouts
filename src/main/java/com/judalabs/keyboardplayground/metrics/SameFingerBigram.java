@@ -2,14 +2,17 @@ package com.judalabs.keyboardplayground.metrics;
 
 import com.judalabs.keyboardplayground.keyboard.Finger;
 import com.judalabs.keyboardplayground.keyboard.LayoutKey;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class SameFingerBigram implements ProducesMetrics {
+@Slf4j
+public class SameFingerBigram implements NewLetterListener, WordFinishedListener {
 
     private final Map<Character, Finger> sfbCandidates;
     private final Map<String, Long> bigramsFound = new HashMap<>();
@@ -21,18 +24,16 @@ public class SameFingerBigram implements ProducesMetrics {
                 .collect(Collectors.toMap(lk -> lk.keyCode().getNormalChar(), LayoutKey::finger));
     }
 
-    public void reset() {
-        currentChar = null;
-        currentFinger = null;
-    }
-
     public void compute(int newChar) {
         if (currentChar != null) {
             final Finger newFinger = sfbCandidates.get((char) newChar);
-            if (currentFinger.equals(newFinger)) {
+            if (Objects.equals(currentFinger, newFinger)) {
                 final char[] chars = {currentChar, (char) newChar};
                 bigramsFound.compute(new String(chars),
                         (oldValue, newValue) -> newValue == null ? 1 : newValue + 1);
+            } else if (currentFinger == null){
+                log.error("currentFinger shoudn't be null");
+                throw new CurrentFingerException((char) newChar);
             }
         }
         currentChar = (char) newChar;
@@ -44,11 +45,18 @@ public class SameFingerBigram implements ProducesMetrics {
         return (double) occurences / totalLetters * 100;
     }
 
-    public List<NGramFreq> resultAll() {
+    public String getResults() {
         return bigramsFound.entrySet()
                 .stream()
                 .map(e-> new NGramFreq(e.getKey(), e.getValue()))
                 .sorted(Comparator.comparingLong(NGramFreq::frequency).reversed())
-                .toList();
+                .toList()
+                .toString();
+    }
+
+    @Override
+    public void finished() {
+        currentChar = null;
+        currentFinger = null;
     }
 }
