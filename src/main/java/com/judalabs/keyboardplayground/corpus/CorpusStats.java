@@ -26,7 +26,7 @@ public class CorpusStats {
                 .add("language=" + language)
                 .add("words=" + words)
                 .add("letterCounts=" + letterCounts)
-                .add("\nresults=\n'" + results + "'")
+                .add("\nresults=\n" + results + "\n")
                 .toString();
     }
 }

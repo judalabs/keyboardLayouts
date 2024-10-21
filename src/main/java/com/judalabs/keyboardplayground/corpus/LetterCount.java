@@ -17,7 +17,7 @@ public record LetterCount(char letter, Long count, double frequency) implements 
         return new StringJoiner(", ", "\n{", "}")
                 .add("letter = " + letter)
                 .add("count = " + count)
-                .add(String.format("frequency = %.4f", frequency))
+                .add(String.format("frequency = %.2f%%", frequency))
                 .toString();
     }
 }

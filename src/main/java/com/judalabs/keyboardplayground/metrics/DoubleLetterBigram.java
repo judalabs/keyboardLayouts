@@ -12,22 +12,21 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class SameFingerBigram implements CollectorListener {
+public class DoubleLetterBigram implements CollectorListener {
 
     private final Map<Character, Finger> sfbCandidates;
     private final Map<String, Long> bigramsFound = new HashMap<>();
     private Character currentChar = null;
     private Finger currentFinger = null;
 
-    public SameFingerBigram(List<LayoutKey> layoutKeys) {
+    public DoubleLetterBigram(List<LayoutKey> layoutKeys) {
         sfbCandidates = layoutKeys.stream()
                 .collect(Collectors.toMap(lk -> lk.keyCode().getNormalChar(), LayoutKey::finger));
     }
 
     public void compute(int newChar) {
         if (currentChar != null) {
-            final Finger newFinger = sfbCandidates.get((char) newChar);
-            if (Objects.equals(currentFinger, newFinger) && !Objects.equals(currentChar, (char) newChar)) {
+            if (Objects.equals(currentChar, (char) newChar)) {
                 final char[] chars = {currentChar, (char) newChar};
                 bigramsFound.compute(new String(chars),
                         (oldValue, newValue) -> newValue == null ? 1 : newValue + 1);
