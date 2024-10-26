@@ -1,6 +1,7 @@
 package com.judalabs.keyboardplayground.metrics.impl;
 
 import com.judalabs.keyboardplayground.keyboard.Finger;
+import com.judalabs.keyboardplayground.keyboard.LayoutKey;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -9,11 +10,11 @@ import java.util.Objects;
 public class CharData {
 
     private final Character character;
-    private final Finger finger;
+    private final LayoutKey layoutKey;
 
-    public CharData(int character, Finger finger) {
+    public CharData(int character, LayoutKey keyCode) {
         this.character = (char) character;
-        this.finger = finger;
+        this.layoutKey = keyCode;
     }
 
     @Override
@@ -27,5 +28,9 @@ public class CharData {
     @Override
     public int hashCode() {
         return Objects.hashCode(character);
+    }
+
+    public Finger getFinger() {
+        return layoutKey.finger();
     }
 }

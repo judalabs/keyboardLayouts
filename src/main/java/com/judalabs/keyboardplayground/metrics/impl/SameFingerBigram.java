@@ -1,6 +1,7 @@
 package com.judalabs.keyboardplayground.metrics.impl;
 
 import com.judalabs.keyboardplayground.keyboard.Finger;
+import com.judalabs.keyboardplayground.keyboard.LayoutKey;
 import com.judalabs.keyboardplayground.metrics.CollectorListener;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,23 +14,23 @@ import java.util.Objects;
 public class SameFingerBigram implements CollectorListener {
 
     private final Map<String, Long> bigramsFound = new HashMap<>();
-    private final Map<Character, Finger> fingerByChar;
+    private final Map<Character, LayoutKey> keyByChar;
     private CharData current;
 
-    public SameFingerBigram(Map<Character, Finger> fingerByChar) {
-        this.fingerByChar = fingerByChar;
+    public SameFingerBigram(Map<Character, LayoutKey> keyByChar) {
+        this.keyByChar = keyByChar;
     }
 
     public void compute(char newChar) {
         if (current != null) {
-            final Finger newFinger = fingerByChar.get(newChar);
+            final Finger newFinger = keyByChar.get(newChar).finger();
             if (Objects.equals(current.getFinger(), newFinger) && !Objects.equals(current.getCharacter(), newChar)) {
                 final char[] chars = {current.getCharacter(), newChar};
                 bigramsFound.compute(new String(chars),
                         (oldValue, newValue) -> newValue == null ? 1 : newValue + 1);
             }
         }
-        current = new CharData(newChar, fingerByChar.get(newChar));
+        current = new CharData(newChar, keyByChar.get(newChar));
     }
 
     public double result(Long totalLetters) {

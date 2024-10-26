@@ -1,6 +1,6 @@
 package com.judalabs.keyboardplayground.metrics.impl;
 
-import com.judalabs.keyboardplayground.keyboard.Finger;
+import com.judalabs.keyboardplayground.keyboard.LayoutKey;
 import com.judalabs.keyboardplayground.metrics.CollectorListener;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,10 +13,10 @@ import java.util.Objects;
 public class DoubleLetterBigram implements CollectorListener {
 
     private final Map<String, Long> bigramsFound = new HashMap<>();
-    private final Map<Character, Finger> fingerByChar;
+    private final Map<Character, LayoutKey> fingerByChar;
     private CharData current;
 
-    public DoubleLetterBigram(Map<Character, Finger> fingerByChar) {
+    public DoubleLetterBigram(Map<Character, LayoutKey> fingerByChar) {
         this.fingerByChar = fingerByChar;
     }
 

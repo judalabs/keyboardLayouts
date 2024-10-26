@@ -1,6 +1,5 @@
 package com.judalabs.keyboardplayground.metrics;
 
-import com.judalabs.keyboardplayground.keyboard.Finger;
 import com.judalabs.keyboardplayground.keyboard.LayoutKey;
 import com.judalabs.keyboardplayground.metrics.impl.DoubleLetterBigram;
 import com.judalabs.keyboardplayground.metrics.impl.SameFingerBigram;
@@ -10,6 +9,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class CollectorEventManager {
@@ -17,7 +17,7 @@ public class CollectorEventManager {
     private final Map<ObservableType, List<CollectorListener>> eventListMap = new EnumMap<>(ObservableType.class);
 
     public CollectorEventManager(List<LayoutKey> keyCodes) {
-        final Map<Character, Finger> fingerByChar = init(keyCodes);
+        final Map<Character, LayoutKey> fingerByChar = init(keyCodes);
         final var sfb = new SameFingerBigram(fingerByChar);
         final var doubleLetterBigram = new DoubleLetterBigram(fingerByChar);
 
@@ -25,11 +25,11 @@ public class CollectorEventManager {
         eventListMap.computeIfPresent(ObservableType.FINISHED_WORD, add(List.of(sfb, doubleLetterBigram)));
     }
 
-    private Map<Character, Finger> init(List<LayoutKey> keyCodes) {
+    private Map<Character, LayoutKey> init(List<LayoutKey> keyCodes) {
         eventListMap.put(ObservableType.ADD, new ArrayList<>());
         eventListMap.put(ObservableType.FINISHED_WORD, new ArrayList<>());
         return keyCodes.stream()
-                .collect(Collectors.toMap(lk -> lk.keyCode().getNormalChar(), LayoutKey::finger));
+                .collect(Collectors.toMap(lk -> lk.keyCode().getNormalChar(), Function.identity()));
     }
 
     public void notifyNewWord() {
