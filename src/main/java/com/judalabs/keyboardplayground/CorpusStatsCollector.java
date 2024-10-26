@@ -1,6 +1,7 @@
 package com.judalabs.keyboardplayground;
 
 import com.judalabs.keyboardplayground.corpus.LetterCount;
+import com.judalabs.keyboardplayground.keyboard.LayoutKey;
 import com.judalabs.keyboardplayground.metrics.CollectorEventManager;
 
 import java.util.HashMap;
@@ -9,13 +10,14 @@ import java.util.Map;
 
 public class CorpusStatsCollector {
 
-    private final CollectorEventManager collectorEventManager = new CollectorEventManager();
+    private final CollectorEventManager collectorEventManager;
 
     private Long words = 0L;
     private final Map<Integer, Long> letterCount = new HashMap<>();
     private Long totalLetters = 0L;
 
-    public CorpusStatsCollector() {
+    public CorpusStatsCollector(List<LayoutKey> keyCodes) {
+        collectorEventManager = new CollectorEventManager(keyCodes);
         for (int letter = ' '; letter <= 'z'; letter++) {
             letterCount.put(letter, 0L);
         }

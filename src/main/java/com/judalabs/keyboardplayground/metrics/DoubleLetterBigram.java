@@ -1,27 +1,23 @@
 package com.judalabs.keyboardplayground.metrics;
 
 import com.judalabs.keyboardplayground.keyboard.Finger;
-import com.judalabs.keyboardplayground.keyboard.LayoutKey;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class DoubleLetterBigram implements CollectorListener {
 
-    private final Map<Character, Finger> sfbCandidates;
     private final Map<String, Long> bigramsFound = new HashMap<>();
+    private final Map<Character, Finger> fingerByChar;
     private Character currentChar = null;
     private Finger currentFinger = null;
 
-    public DoubleLetterBigram(List<LayoutKey> layoutKeys) {
-        sfbCandidates = layoutKeys.stream()
-                .collect(Collectors.toMap(lk -> lk.keyCode().getNormalChar(), LayoutKey::finger));
+    public DoubleLetterBigram(Map<Character, Finger> fingerByChar) {
+        this.fingerByChar = fingerByChar;
     }
 
     public void compute(int newChar) {
@@ -36,7 +32,7 @@ public class DoubleLetterBigram implements CollectorListener {
             }
         }
         currentChar = (char) newChar;
-        currentFinger = sfbCandidates.get(currentChar);
+        currentFinger = fingerByChar.get(currentChar);
     }
 
     public double result(Long totalLetters) {

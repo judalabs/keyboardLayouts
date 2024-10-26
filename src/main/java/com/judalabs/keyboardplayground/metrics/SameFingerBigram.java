@@ -1,32 +1,28 @@
 package com.judalabs.keyboardplayground.metrics;
 
 import com.judalabs.keyboardplayground.keyboard.Finger;
-import com.judalabs.keyboardplayground.keyboard.LayoutKey;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class SameFingerBigram implements CollectorListener {
 
-    private final Map<Character, Finger> sfbCandidates;
     private final Map<String, Long> bigramsFound = new HashMap<>();
+    private final Map<Character, Finger> fingerByChar;
     private Character currentChar = null;
     private Finger currentFinger = null;
 
-    public SameFingerBigram(List<LayoutKey> layoutKeys) {
-        sfbCandidates = layoutKeys.stream()
-                .collect(Collectors.toMap(lk -> lk.keyCode().getNormalChar(), LayoutKey::finger));
+    public SameFingerBigram(Map<Character, Finger> fingerByChar) {
+        this.fingerByChar = fingerByChar;
     }
 
     public void compute(int newChar) {
         if (currentChar != null) {
-            final Finger newFinger = sfbCandidates.get((char) newChar);
+            final Finger newFinger = fingerByChar.get((char) newChar);
             if (Objects.equals(currentFinger, newFinger) && !Objects.equals(currentChar, (char) newChar)) {
                 final char[] chars = {currentChar, (char) newChar};
                 bigramsFound.compute(new String(chars),
@@ -37,7 +33,7 @@ public class SameFingerBigram implements CollectorListener {
             }
         }
         currentChar = (char) newChar;
-        currentFinger = sfbCandidates.get(currentChar);
+        currentFinger = fingerByChar.get(currentChar);
     }
 
     public double result(Long totalLetters) {
