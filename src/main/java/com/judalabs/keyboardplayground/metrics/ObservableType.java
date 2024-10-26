@@ -1,5 +1,5 @@
 package com.judalabs.keyboardplayground.metrics;
 
-public enum EnumEvent {
+public enum ObservableType {
     ADD, FINISHED_WORD
 }

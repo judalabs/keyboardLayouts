@@ -1,4 +1,4 @@
-package com.judalabs.keyboardplayground.metrics;
+package com.judalabs.keyboardplayground.metrics.impl;
 
 public class CurrentFingerException extends RuntimeException {
 
