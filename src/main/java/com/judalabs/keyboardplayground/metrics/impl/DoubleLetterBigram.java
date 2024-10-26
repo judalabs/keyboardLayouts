@@ -14,26 +14,20 @@ public class DoubleLetterBigram implements CollectorListener {
 
     private final Map<String, Long> bigramsFound = new HashMap<>();
     private final Map<Character, Finger> fingerByChar;
-    private Character currentChar = null;
-    private Finger currentFinger = null;
+    private CharData current;
 
     public DoubleLetterBigram(Map<Character, Finger> fingerByChar) {
         this.fingerByChar = fingerByChar;
     }
 
-    public void compute(int newChar) {
-        if (currentChar != null) {
-            if (Objects.equals(currentChar, (char) newChar)) {
-                final char[] chars = {currentChar, (char) newChar};
+    public void compute(char newChar) {
+        if (current != null && Objects.equals(current.getCharacter(), newChar)) {
+                final char[] chars = {current.getCharacter(), newChar};
                 bigramsFound.compute(new String(chars),
                         (oldValue, newValue) -> newValue == null ? 1 : newValue + 1);
-            } else if (currentFinger == null){
-                log.error("currentFinger shoudn't be null");
-                throw new CurrentFingerException((char) newChar);
             }
-        }
-        currentChar = (char) newChar;
-        currentFinger = fingerByChar.get(currentChar);
+
+        current = new CharData(newChar, fingerByChar.get(newChar));
     }
 
     public double result(Long totalLetters) {
@@ -52,7 +46,6 @@ public class DoubleLetterBigram implements CollectorListener {
 
     @Override
     public void finished() {
-        currentChar = null;
-        currentFinger = null;
+        current = null;
     }
 }

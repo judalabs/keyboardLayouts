@@ -2,7 +2,7 @@ package com.judalabs.keyboardplayground.metrics;
 
 public interface CollectorListener {
 
-    void compute(int character);
+    void compute(char character);
 
     double result(Long totalLetters);
 

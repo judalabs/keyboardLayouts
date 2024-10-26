@@ -39,7 +39,7 @@ public class CollectorEventManager {
 
     public void compute(int elem) {
         eventListMap.get(ObservableType.ADD)
-                .forEach(newLetterListener -> newLetterListener.compute(elem));
+                .forEach(newLetterListener -> newLetterListener.compute((char) elem));
     }
 
     public String getResultsFromListeners(Long totalLetters) {
