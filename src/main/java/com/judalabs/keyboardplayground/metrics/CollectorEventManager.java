@@ -2,6 +2,7 @@ package com.judalabs.keyboardplayground.metrics;
 
 import com.judalabs.keyboardplayground.keyboard.LayoutKey;
 import com.judalabs.keyboardplayground.metrics.impl.DoubleLetterBigram;
+import com.judalabs.keyboardplayground.metrics.impl.FullScissorBigram;
 import com.judalabs.keyboardplayground.metrics.impl.SameFingerBigram;
 
 import java.util.ArrayList;
@@ -20,9 +21,10 @@ public class CollectorEventManager {
         final Map<Character, LayoutKey> fingerByChar = init(keyCodes);
         final var sfb = new SameFingerBigram(fingerByChar);
         final var doubleLetterBigram = new DoubleLetterBigram(fingerByChar);
+        final var fsb = new FullScissorBigram(fingerByChar);
 
-        eventListMap.computeIfPresent(ObservableType.ADD, add(List.of(sfb, doubleLetterBigram)));
-        eventListMap.computeIfPresent(ObservableType.FINISHED_WORD, add(List.of(sfb, doubleLetterBigram)));
+        eventListMap.computeIfPresent(ObservableType.ADD, add(List.of(sfb, doubleLetterBigram, fsb)));
+        eventListMap.computeIfPresent(ObservableType.FINISHED_WORD, add(List.of(sfb, doubleLetterBigram, fsb)));
     }
 
     private Map<Character, LayoutKey> init(List<LayoutKey> keyCodes) {
@@ -45,7 +47,7 @@ public class CollectorEventManager {
     public String getResultsFromListeners(Long totalLetters) {
         return eventListMap.get(ObservableType.FINISHED_WORD).stream()
                 .map(newLetterListener -> newLetterListener.resultFormat(totalLetters))
-                .collect(Collectors.joining("\n\t","\t", ""));
+                .collect(Collectors.joining("\n\t", "\t", ""));
     }
 
 

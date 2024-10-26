@@ -33,4 +33,14 @@ public class CharData {
     public Finger getFinger() {
         return layoutKey.finger();
     }
+
+    public int getRow() {
+        return layoutKey.xPos();
+    }
+
+    public boolean isSameFingerButDiffChar(CharData newData) {
+        return this.getFinger().equals(newData.getFinger()) &&
+                !this.character.equals(newData.character);
+    }
+
 }
