@@ -2,7 +2,14 @@ package com.judalabs.keyboardplayground.keyboard;
 
 import java.util.List;
 
-import static com.judalabs.keyboardplayground.keyboard.Finger.*;
+import static com.judalabs.keyboardplayground.keyboard.Finger.LEFT_INDEX;
+import static com.judalabs.keyboardplayground.keyboard.Finger.LEFT_MIDDLE;
+import static com.judalabs.keyboardplayground.keyboard.Finger.LEFT_PINKY;
+import static com.judalabs.keyboardplayground.keyboard.Finger.LEFT_RING;
+import static com.judalabs.keyboardplayground.keyboard.Finger.RIGHT_INDEX;
+import static com.judalabs.keyboardplayground.keyboard.Finger.RIGHT_MIDDLE;
+import static com.judalabs.keyboardplayground.keyboard.Finger.RIGHT_PINKY;
+import static com.judalabs.keyboardplayground.keyboard.Finger.RIGHT_RING;
 import static com.judalabs.keyboardplayground.keyboard.KeyCode.*;
 
 public class DefaultLayout {
@@ -37,12 +44,12 @@ public class DefaultLayout {
                 LayoutKey.letter(KC_K, RIGHT_MIDDLE, 1, 7),
                 LayoutKey.letter(KC_L, RIGHT_RING, 1, 8),
                 LayoutKey.letter(KC_Z, LEFT_PINKY, 2, 9),
-                LayoutKey.letter(KC_X, LEFT_RING, 3, 0),
-                LayoutKey.letter(KC_C, LEFT_MIDDLE, 3, 1),
-                LayoutKey.letter(KC_V, LEFT_INDEX, 3, 2),
-                LayoutKey.letter(KC_B, LEFT_INDEX, 3, 3),
-                LayoutKey.letter(KC_N, RIGHT_INDEX, 3, 4),
-                LayoutKey.letter(KC_M, RIGHT_INDEX, 3, 5)
+                LayoutKey.letter(KC_X, LEFT_RING, 2, 0),
+                LayoutKey.letter(KC_C, LEFT_MIDDLE, 2, 1),
+                LayoutKey.letter(KC_V, LEFT_INDEX, 2, 2),
+                LayoutKey.letter(KC_B, LEFT_INDEX, 2, 3),
+                LayoutKey.letter(KC_N, RIGHT_INDEX, 2, 4),
+                LayoutKey.letter(KC_M, RIGHT_INDEX, 2, 5)
         );
     }
 }
