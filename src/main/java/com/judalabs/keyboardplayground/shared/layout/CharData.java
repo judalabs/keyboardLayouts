@@ -1,7 +1,6 @@
-package com.judalabs.keyboardplayground.metrics.impl;
+package com.judalabs.keyboardplayground.shared.layout;
 
-import com.judalabs.keyboardplayground.keyboard.Finger;
-import com.judalabs.keyboardplayground.keyboard.LayoutKey;
+import com.judalabs.keyboardplayground.shared.keyboard.Finger;
 import lombok.Getter;
 
 import java.util.Objects;

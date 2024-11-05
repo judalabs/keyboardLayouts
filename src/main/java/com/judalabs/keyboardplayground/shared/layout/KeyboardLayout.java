@@ -1,4 +1,4 @@
-package com.judalabs.keyboardplayground.keyboard;
+package com.judalabs.keyboardplayground.shared.layout;
 
 import lombok.Builder;
 import lombok.Getter;

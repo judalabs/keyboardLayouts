@@ -1,9 +1,15 @@
-package com.judalabs.keyboardplayground.metrics.impl;
+package com.judalabs.keyboardplayground.features.metrics.impl;
 
-import com.judalabs.keyboardplayground.keyboard.Finger;
-import com.judalabs.keyboardplayground.keyboard.LayoutKey;
-import com.judalabs.keyboardplayground.metrics.CollectorListener;
+import com.judalabs.keyboardplayground.features.metrics.CollectorListener;
+import com.judalabs.keyboardplayground.features.metrics.InputLetterListener;
+import com.judalabs.keyboardplayground.features.metrics.KeyboardLayoutSupplier;
+import com.judalabs.keyboardplayground.features.metrics.WordReadListener;
+import com.judalabs.keyboardplayground.shared.keyboard.Finger;
+import com.judalabs.keyboardplayground.shared.layout.CharData;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -11,15 +17,15 @@ import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
-public class SameFingerBigram implements CollectorListener {
+@Component
+@RequestScope
+@RequiredArgsConstructor
+class SameFingerBigram implements CollectorListener, WordReadListener, InputLetterListener {
 
     private final Map<String, Long> bigramsFound = new HashMap<>();
-    private final Map<Character, LayoutKey> keyByChar;
+    private final KeyboardLayoutSupplier keyByChar;
     private CharData current;
 
-    public SameFingerBigram(Map<Character, LayoutKey> keyByChar) {
-        this.keyByChar = keyByChar;
-    }
 
     public void compute(char newChar) {
         if (current != null) {
@@ -41,7 +47,7 @@ public class SameFingerBigram implements CollectorListener {
     public String getResults() {
         return bigramsFound.entrySet()
                 .stream()
-                .map(e-> new NGramFreq(e.getKey(), e.getValue()))
+                .map(e -> new NGramFreq(e.getKey(), e.getValue()))
                 .sorted(Comparator.comparingLong(NGramFreq::frequency).reversed())
                 .toList()
                 .toString();

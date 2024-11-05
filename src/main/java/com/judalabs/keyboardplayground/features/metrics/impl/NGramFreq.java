@@ -1,4 +1,4 @@
-package com.judalabs.keyboardplayground.metrics.impl;
+package com.judalabs.keyboardplayground.features.metrics.impl;
 
 public record NGramFreq(String substring, Long frequency) {
 }

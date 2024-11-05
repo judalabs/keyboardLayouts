@@ -1,18 +1,21 @@
-package com.judalabs.keyboardplayground.keyboard;
+package com.judalabs.keyboardplayground.shared.layout;
 
 import java.util.List;
 
-import static com.judalabs.keyboardplayground.keyboard.Finger.LEFT_INDEX;
-import static com.judalabs.keyboardplayground.keyboard.Finger.LEFT_MIDDLE;
-import static com.judalabs.keyboardplayground.keyboard.Finger.LEFT_PINKY;
-import static com.judalabs.keyboardplayground.keyboard.Finger.LEFT_RING;
-import static com.judalabs.keyboardplayground.keyboard.Finger.RIGHT_INDEX;
-import static com.judalabs.keyboardplayground.keyboard.Finger.RIGHT_MIDDLE;
-import static com.judalabs.keyboardplayground.keyboard.Finger.RIGHT_PINKY;
-import static com.judalabs.keyboardplayground.keyboard.Finger.RIGHT_RING;
-import static com.judalabs.keyboardplayground.keyboard.KeyCode.*;
+import static com.judalabs.keyboardplayground.shared.keyboard.Finger.LEFT_INDEX;
+import static com.judalabs.keyboardplayground.shared.keyboard.Finger.LEFT_MIDDLE;
+import static com.judalabs.keyboardplayground.shared.keyboard.Finger.LEFT_PINKY;
+import static com.judalabs.keyboardplayground.shared.keyboard.Finger.LEFT_RING;
+import static com.judalabs.keyboardplayground.shared.keyboard.Finger.RIGHT_INDEX;
+import static com.judalabs.keyboardplayground.shared.keyboard.Finger.RIGHT_MIDDLE;
+import static com.judalabs.keyboardplayground.shared.keyboard.Finger.RIGHT_PINKY;
+import static com.judalabs.keyboardplayground.shared.keyboard.Finger.RIGHT_RING;
+import static com.judalabs.keyboardplayground.shared.keyboard.KeyCode.*;
 
 public class DefaultLayout {
+
+    private DefaultLayout() {
+    }
 
     public static KeyboardLayout build() {
         return KeyboardLayout.builder()

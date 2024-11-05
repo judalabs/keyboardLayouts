@@ -1,23 +1,28 @@
 package com.judalabs.keyboardplayground;
 
-import com.judalabs.keyboardplayground.corpus.LetterCount;
-import com.judalabs.keyboardplayground.keyboard.LayoutKey;
-import com.judalabs.keyboardplayground.metrics.CollectorEventManager;
+import com.judalabs.keyboardplayground.features.metrics.EventCollector;
+import com.judalabs.keyboardplayground.shared.corpus.LetterCount;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 
-public class CorpusStatsCollector {
+public class CorpusStatsCollector implements Collector<Integer, CorpusStatsCollector, CorpusStatsCollector> {
 
-    private final CollectorEventManager collectorEventManager;
+    private final EventCollector eventCollector;
 
     private Long words = 0L;
     private final Map<Integer, Long> letterCount = new HashMap<>();
     private Long totalLetters = 0L;
 
-    public CorpusStatsCollector(List<LayoutKey> keyCodes) {
-        collectorEventManager = new CollectorEventManager(keyCodes);
+    public CorpusStatsCollector(EventCollector eventCollector) {
+        this.eventCollector = eventCollector;
         for (int letter = ' '; letter <= 'z'; letter++) {
             letterCount.put(letter, 0L);
         }
@@ -26,9 +31,9 @@ public class CorpusStatsCollector {
     public void receive(int elem) {
         if (' ' == elem) {
             words++;
-            collectorEventManager.notifyNewWord();
+            eventCollector.notifyNewWord();
         } else {
-            collectorEventManager.compute(elem);
+            eventCollector.compute(elem);
         }
         final Long count = letterCount.get(elem) + 1;
         letterCount.put(elem, count);
@@ -55,6 +60,31 @@ public class CorpusStatsCollector {
     }
 
     public String getResults() {
-        return collectorEventManager.getResultsFromListeners(totalLetters);
+        return eventCollector.getResultsFromListeners(totalLetters);
+    }
+
+    @Override
+    public Supplier<CorpusStatsCollector> supplier() {
+        return ()-> new CorpusStatsCollector(eventCollector);
+    }
+
+    @Override
+    public BiConsumer<CorpusStatsCollector, Integer> accumulator() {
+        return CorpusStatsCollector::receive;
+    }
+
+    @Override
+    public BinaryOperator<CorpusStatsCollector> combiner() {
+        return null;
+    }
+
+    @Override
+    public Function<CorpusStatsCollector, CorpusStatsCollector> finisher() {
+        return null;
+    }
+
+    @Override
+    public Set<Characteristics> characteristics() {
+        return Set.of(Characteristics.IDENTITY_FINISH);
     }
 }

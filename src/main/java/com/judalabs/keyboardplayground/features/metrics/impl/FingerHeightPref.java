@@ -1,8 +1,8 @@
-package com.judalabs.keyboardplayground.metrics.impl;
+package com.judalabs.keyboardplayground.features.metrics.impl;
 
-import com.judalabs.keyboardplayground.keyboard.Finger;
+import com.judalabs.keyboardplayground.shared.keyboard.Finger;
 
-public enum FingerHeightPref {
+enum FingerHeightPref {
 
     INDEX(1, Finger.LEFT_INDEX, Finger.RIGHT_INDEX),
     MIDDLE(4, Finger.LEFT_MIDDLE, Finger.RIGHT_MIDDLE),
@@ -21,7 +21,7 @@ public enum FingerHeightPref {
     }
 
     public static boolean isThisKeyInHigherPosThanItShould(Finger current, Finger newFinger) {
-        int heightCurr = 0,heightNew = 0;
+        int heightCurr = 0, heightNew = 0;
         for (FingerHeightPref heightPref : values()) {
             heightCurr = Math.max(heightCurr, getFingerHeight(current, heightPref));
             heightNew = Math.max(heightNew, getFingerHeight(newFinger, heightPref));
@@ -30,6 +30,6 @@ public enum FingerHeightPref {
     }
 
     private static int getFingerHeight(Finger finger, FingerHeightPref heightPref) {
-        return heightPref.left == finger || heightPref.right == finger? heightPref.height:0;
+        return heightPref.left == finger || heightPref.right == finger ? heightPref.height : 0;
     }
 }

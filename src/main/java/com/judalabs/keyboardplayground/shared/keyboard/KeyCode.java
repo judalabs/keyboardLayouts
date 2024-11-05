@@ -1,4 +1,4 @@
-package com.judalabs.keyboardplayground.keyboard;
+package com.judalabs.keyboardplayground.shared.keyboard;
 
 import org.springframework.lang.NonNull;
 
@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.judalabs.keyboardplayground.keyboard.KeyCode.TypeKeyCode.CONTROL;
-import static com.judalabs.keyboardplayground.keyboard.KeyCode.TypeKeyCode.FN;
-import static com.judalabs.keyboardplayground.keyboard.KeyCode.TypeKeyCode.LETTER;
-import static com.judalabs.keyboardplayground.keyboard.KeyCode.TypeKeyCode.NUMBER;
+import static com.judalabs.keyboardplayground.shared.keyboard.KeyCode.TypeKeyCode.CONTROL;
+import static com.judalabs.keyboardplayground.shared.keyboard.KeyCode.TypeKeyCode.FN;
+import static com.judalabs.keyboardplayground.shared.keyboard.KeyCode.TypeKeyCode.LETTER;
+import static com.judalabs.keyboardplayground.shared.keyboard.KeyCode.TypeKeyCode.NUMBER;
 import static java.util.stream.Collectors.filtering;
 import static java.util.stream.Collectors.toMap;
 
@@ -84,8 +84,7 @@ public enum KeyCode {
     KC_ESCAPE(CONTROL, null, null),
     KC_SPACE(CONTROL, null, null),
     KC_COMMA(CONTROL, null, null),
-    KC_DOT(CONTROL, null, null)
-    ;
+    KC_DOT(CONTROL, null, null);
 
     KeyCode(TypeKeyCode type, Character normalChar, Character alterChar) {
         this.type = type;

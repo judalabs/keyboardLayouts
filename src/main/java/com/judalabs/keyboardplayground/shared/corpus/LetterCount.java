@@ -1,4 +1,4 @@
-package com.judalabs.keyboardplayground.corpus;
+package com.judalabs.keyboardplayground.shared.corpus;
 
 import java.util.Comparator;
 import java.util.StringJoiner;

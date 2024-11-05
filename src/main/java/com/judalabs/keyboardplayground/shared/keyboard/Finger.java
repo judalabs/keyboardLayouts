@@ -1,4 +1,4 @@
-package com.judalabs.keyboardplayground.keyboard;
+package com.judalabs.keyboardplayground.shared.keyboard;
 
 public enum Finger {
 
@@ -12,7 +12,7 @@ public enum Finger {
     RIGHT_MIDDLE(7, Side.RIGHT),
     RIGHT_RING(8, Side.RIGHT),
     RIGHT_PINKY(9, Side.RIGHT),
-        ;
+    ;
 
     public final int order;
     private final Side side;
