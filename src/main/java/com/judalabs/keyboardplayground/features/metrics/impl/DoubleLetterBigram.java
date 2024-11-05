@@ -11,6 +11,7 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -39,13 +40,12 @@ class DoubleLetterBigram implements CollectorListener, InputLetterListener, Word
         return (double) occurences / totalLetters * 100;
     }
 
-    public String getResults() {
+    public List<NGramFreq> getResults() {
         return bigramsFound.entrySet()
                 .stream()
                 .map(e -> new NGramFreq(e.getKey(), e.getValue()))
                 .sorted(Comparator.comparingLong(NGramFreq::frequency).reversed())
-                .toList()
-                .toString();
+                .toList();
     }
 
     @Override

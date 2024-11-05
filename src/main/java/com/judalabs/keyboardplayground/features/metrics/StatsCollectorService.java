@@ -1,8 +1,9 @@
-package com.judalabs.keyboardplayground.shared.corpus;
+package com.judalabs.keyboardplayground.features.metrics;
 
 import com.judalabs.keyboardplayground.CorpusStatsCollector;
-import com.judalabs.keyboardplayground.features.metrics.EventCollector;
 import com.judalabs.keyboardplayground.features.metrics.impl.KeyboardLayoutSupplier;
+import com.judalabs.keyboardplayground.shared.corpus.CorpusStats;
+import com.judalabs.keyboardplayground.shared.corpus.Language;
 import com.judalabs.keyboardplayground.shared.layout.DefaultLayout;
 import com.judalabs.keyboardplayground.shared.layout.LayoutKey;
 import lombok.AllArgsConstructor;

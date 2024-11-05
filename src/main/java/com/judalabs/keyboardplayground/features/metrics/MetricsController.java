@@ -1,4 +1,4 @@
-package com.judalabs.keyboardplayground.shared.corpus;
+package com.judalabs.keyboardplayground.features.metrics;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
