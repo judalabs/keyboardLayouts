@@ -2,7 +2,6 @@ package com.judalabs.keyboardplayground.features.metrics.impl;
 
 import com.judalabs.keyboardplayground.features.metrics.CollectorListener;
 import com.judalabs.keyboardplayground.features.metrics.InputLetterListener;
-import com.judalabs.keyboardplayground.features.metrics.KeyboardLayoutSupplier;
 import com.judalabs.keyboardplayground.features.metrics.WordReadListener;
 import com.judalabs.keyboardplayground.shared.layout.CharData;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.judalabs.keyboardplayground.features.metrics;
+package com.judalabs.keyboardplayground.features.metrics.impl;
 
 import com.judalabs.keyboardplayground.shared.layout.LayoutKey;
 import org.springframework.stereotype.Component;
