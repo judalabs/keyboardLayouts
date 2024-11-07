@@ -9,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
@@ -21,35 +18,30 @@ import java.util.Objects;
 @RequiredArgsConstructor
 class DoubleLetterBigram implements CollectorListener, InputLetterListener, WordReadListener {
 
-    private final Map<String, Long> bigramsFound = new HashMap<>();
+    private final NgramCounter ngramCounter = new NgramCounter();
     private final KeyboardLayoutSupplier keyByChar;
     private CharData current = null;
 
     public void compute(char newChar) {
         if (current != null && Objects.equals(current.getCharacter(), newChar)) {
-            final char[] chars = {current.getCharacter(), newChar};
-            bigramsFound.compute(new String(chars),
-                    (oldValue, newValue) -> newValue == null ? 1 : newValue + 1);
+            ngramCounter.add(current.getCharacter(), newChar);
         }
 
         current = new CharData(newChar, keyByChar.get(newChar));
     }
 
-    public double result(Long totalLetters) {
-        final Long occurences = bigramsFound.values().stream().reduce(Long::sum).orElse(0L);
-        return (double) occurences / totalLetters * 100;
-    }
-
-    public List<NGramFreq> getResults() {
-        return bigramsFound.entrySet()
-                .stream()
-                .map(e -> new NGramFreq(e.getKey(), e.getValue()))
-                .sorted(Comparator.comparingLong(NGramFreq::frequency).reversed())
-                .toList();
-    }
-
     @Override
     public void finished() {
         current = null;
+    }
+
+    @Override
+    public double result(Long totalLetters) {
+        return ngramCounter.result(totalLetters);
+    }
+
+    public List<NGramFreq> getResults() {
+        return ngramCounter.getResults();
+
     }
 }

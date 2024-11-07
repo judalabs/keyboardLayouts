@@ -15,7 +15,7 @@ public class CorpusStats {
     private Language language;
 
     private List<LetterCount> letterCounts;
-
+    
     private Long words;
 
     private String results;
