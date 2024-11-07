@@ -20,23 +20,23 @@ class FullScissorBigram implements CollectorListener, InputLetterListener, WordR
 
     private final NgramCounter ngramCounter = new NgramCounter();
     private final KeyboardLayoutSupplier keyByChar;
-    private final FixedSizeDeque<CharData> fixedSizeDeque = new FixedSizeDeque<>(2);
+    private final FixedSizeDeque<CharData> previous = new FixedSizeDeque<>(2);
 
     public void compute(char newChar) {
         final CharData newData = new CharData(newChar, keyByChar.get(newChar));
-        if (!fixedSizeDeque.isEmpty() && isScissor(newData)) {
-            ngramCounter.add(fixedSizeDeque.peekFirst().getCharacter(), newChar);
+        if (!previous.isEmpty() && isScissor(newData)) {
+            ngramCounter.add(previous.peekFirst().getCharacter(), newChar);
         }
-        fixedSizeDeque.addFirst(newData);
+        previous.addFirst(newData);
     }
 
     private boolean isScissor(CharData newData) {
-        final CharData curr = fixedSizeDeque.peekFirst();
+        final CharData curr = this.previous.peekFirst();
         final boolean itsTwoRowTravel = curr.isSameFingerButDiffChar(newData) &&
                 Math.abs(curr.getRow() - newData.getRow()) == 2;
 
         return itsTwoRowTravel && FingerHeightPref
-                .isThisKeyInHigherPosThanItShould(fixedSizeDeque.peekLast().getFinger(), newData.getFinger());
+                .isThisKeyInHigherPosThanItShould(this.previous.peekLast().getFinger(), newData.getFinger());
     }
 
     public double result(Long totalLetters) {
@@ -49,6 +49,6 @@ class FullScissorBigram implements CollectorListener, InputLetterListener, WordR
 
     @Override
     public void finished() {
-        fixedSizeDeque.reset();
+        previous.reset();
     }
 }
