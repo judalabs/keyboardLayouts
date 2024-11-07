@@ -3,6 +3,7 @@ package com.judalabs.keyboardplayground.features.metrics.impl;
 import com.judalabs.keyboardplayground.features.metrics.CollectorListener;
 import com.judalabs.keyboardplayground.features.metrics.InputLetterListener;
 import com.judalabs.keyboardplayground.features.metrics.WordReadListener;
+import com.judalabs.keyboardplayground.shared.FixedSizeDeque;
 import com.judalabs.keyboardplayground.shared.layout.CharData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,21 +20,23 @@ class FullScissorBigram implements CollectorListener, InputLetterListener, WordR
 
     private final NgramCounter ngramCounter = new NgramCounter();
     private final KeyboardLayoutSupplier keyByChar;
-    private CharData curr = null;
+    private final FixedSizeDeque<CharData> fixedSizeDeque = new FixedSizeDeque<>(2);
 
     public void compute(char newChar) {
         final CharData newData = new CharData(newChar, keyByChar.get(newChar));
-        if (curr != null && isScissor(newData)) {
-            ngramCounter.add(curr.getCharacter(), newChar);
+        if (!fixedSizeDeque.isEmpty() && isScissor(newData)) {
+            ngramCounter.add(fixedSizeDeque.peekFirst().getCharacter(), newChar);
         }
-        curr = newData;
+        fixedSizeDeque.addFirst(newData);
     }
 
     private boolean isScissor(CharData newData) {
+        final CharData curr = fixedSizeDeque.peekFirst();
         final boolean itsTwoRowTravel = curr.isSameFingerButDiffChar(newData) &&
                 Math.abs(curr.getRow() - newData.getRow()) == 2;
 
-        return itsTwoRowTravel && FingerHeightPref.isThisKeyInHigherPosThanItShould(curr.getFinger(), newData.getFinger());
+        return itsTwoRowTravel && FingerHeightPref
+                .isThisKeyInHigherPosThanItShould(fixedSizeDeque.peekLast().getFinger(), newData.getFinger());
     }
 
     public double result(Long totalLetters) {
@@ -46,6 +49,6 @@ class FullScissorBigram implements CollectorListener, InputLetterListener, WordR
 
     @Override
     public void finished() {
-        curr = null;
+        fixedSizeDeque.reset();
     }
 }

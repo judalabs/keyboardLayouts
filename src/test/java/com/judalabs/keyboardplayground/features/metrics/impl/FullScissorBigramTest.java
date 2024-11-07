@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,31 +33,36 @@ class FullScissorBigramTest {
         assertEquals(0, fullScissorBigram.getResults().size());
     }
 
-//    @Test
-//    @DisplayName("Should return a bigram when same finger press two diff digits in sequence")
-//    void shouldCountWhenFingerCrossBetweenUnbalancedLengths(){
-//        fullScissorBigram.compute('c');
-//        fullScissorBigram.compute('r');
-//        final List<NGramFreq> results = fullScissorBigram.getResults();
-//        assertEquals(1, results.size());
-//        assertEquals(1, results.getFirst().frequency());
-//        assertEquals("cr", results.getFirst().substring());
-//    }
+    @Test
+    @DisplayName("Should return a bigram when same finger press two diff digits in sequence")
+    void shouldCountWhenFingerCrossBetweenUnbalancedLengths(){
+        fullScissorBigram.compute('c');
+        fullScissorBigram.compute('v');
+        fullScissorBigram.compute('r');
+        final List<NGramFreq> results = fullScissorBigram.getResults();
+        assertEquals(1, results.size());
+        assertEquals(1, results.getFirst().frequency());
+        assertEquals("vr", results.getFirst().substring());
+    }
 
-//    @Test
-//    @DisplayName("Should return sum of frequency")
-//    void shouldReturnsSumOfrequency(){
-//        fullScissorBigram.compute('a');
-//        fullScissorBigram.compute('a');
-//        fullScissorBigram.compute('k');// letter to reset the bigram
-//        fullScissorBigram.compute('a');
-//        fullScissorBigram.compute('a');
-//
-//        final List<NGramFreq> results = fullScissorBigram.getResults();
-//        assertEquals(1, results.size());
-//        assertEquals(2, results.getFirst().frequency());
-//        assertEquals("aa", results.getFirst().substring());
-//    }
+    @Test
+    @DisplayName("Should return sum of frequency")
+    void shouldReturnsSumOfrequency(){
+        fullScissorBigram.compute('c');
+        fullScissorBigram.compute('v');
+        fullScissorBigram.compute('r');
+
+        fullScissorBigram.compute('i'); // letter to reset the bigram
+
+        fullScissorBigram.compute('c');
+        fullScissorBigram.compute('v');
+        fullScissorBigram.compute('r');
+
+        final List<NGramFreq> results = fullScissorBigram.getResults();
+        assertEquals(1, results.size());
+        assertEquals(2, results.getFirst().frequency());
+        assertEquals("vr", results.getFirst().substring());
+    }
 
     @Test
     @DisplayName("Should not return a bigram when same finger press two diff digits not in sequence")
