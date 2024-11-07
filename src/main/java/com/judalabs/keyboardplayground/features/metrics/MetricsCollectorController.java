@@ -2,16 +2,18 @@ package com.judalabs.keyboardplayground.features.metrics;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-public class MetricsController {
+@RequestMapping("/metrics")
+public class MetricsCollectorController {
 
-    private final StatsCollectorService statsCollectorService;
+    private final MetricsCollectorService metricsCollectorService;
 
     @GetMapping
     public void processMetrics() {
-        statsCollectorService.processMetrics();
+        metricsCollectorService.processMetrics();
     }
 }

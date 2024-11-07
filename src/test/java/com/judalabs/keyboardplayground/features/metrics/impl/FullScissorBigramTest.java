@@ -32,6 +32,15 @@ class FullScissorBigramTest {
         fullScissorBigram.compute('A');
         assertEquals(0, fullScissorBigram.getResults().size());
     }
+    @Test
+    @DisplayName("Should not count half scissors")
+    void shouldntCountHalfScissors(){
+        fullScissorBigram.compute('c');
+        fullScissorBigram.compute('v');
+        fullScissorBigram.compute('f');
+        final List<NGramFreq> results = fullScissorBigram.getResults();
+        assertEquals(0, results.size());
+    }
 
     @Test
     @DisplayName("Should return a bigram when same finger press two diff digits in sequence")

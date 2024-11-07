@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class StatsCollectorService {
+public class MetricsCollectorService {
 
     private final KeyboardLayoutSupplier keyboardLayoutSupplier;
     private final EventCollector eventCollector;
