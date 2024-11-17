@@ -21,7 +21,8 @@ enum FingerHeightPref {
     }
 
     public static boolean isThisKeyInHigherPosThanItShould(Finger current, Finger newFinger) {
-        int heightCurr = 0, heightNew = 0;
+        int heightCurr = 0;
+        int heightNew = 0;
         for (FingerHeightPref heightPref : values()) {
             heightCurr = Math.max(heightCurr, getFingerHeight(current, heightPref));
             heightNew = Math.max(heightNew, getFingerHeight(newFinger, heightPref));
