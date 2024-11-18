@@ -2,6 +2,7 @@ package com.judalabs.keyboardplayground.features.metrics.impl;
 
 import com.judalabs.keyboardplayground.shared.layout.LayoutKey;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public class KeyboardLayoutSupplier {
     private Map<Character, LayoutKey> keyByChar;
 
     public void init(List<LayoutKey> keycodes) {
+        if (CollectionUtils.isEmpty(keycodes)) {
+            throw new NoKeycodesFoundException();
+        }
         keyByChar = keycodes.stream()
                 .collect(Collectors.toMap(lk -> lk.keyCode().getNormalChar(), Function.identity()));
     }

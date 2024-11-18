@@ -1,5 +1,8 @@
-package com.judalabs.keyboardplayground.features.metrics;
+package com.judalabs.keyboardplayground.features.metrics.impl;
 
+import com.judalabs.keyboardplayground.features.metrics.CollectorListener;
+import com.judalabs.keyboardplayground.features.metrics.InputLetterListener;
+import com.judalabs.keyboardplayground.features.metrics.WordReadListener;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

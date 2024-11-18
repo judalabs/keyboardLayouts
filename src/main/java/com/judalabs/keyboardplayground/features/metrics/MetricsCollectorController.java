@@ -1,5 +1,6 @@
 package com.judalabs.keyboardplayground.features.metrics;
 
+import com.judalabs.keyboardplayground.features.metrics.impl.JobLauncherService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/metrics")
 public class MetricsCollectorController {
 
-    private final MetricsCollectorService metricsCollectorService;
+    private final JobLauncherService jobLauncherService;
 
-    @GetMapping
-    public void processMetrics() {
-        metricsCollectorService.processMetrics();
+    @GetMapping("/default")
+    public void defaultMetrics() {
+        jobLauncherService.executeDefaultKeyCodes();
     }
 }
