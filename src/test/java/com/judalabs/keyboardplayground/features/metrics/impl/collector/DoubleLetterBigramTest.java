@@ -1,6 +1,7 @@
-package com.judalabs.keyboardplayground.features.metrics.impl;
+package com.judalabs.keyboardplayground.features.metrics.impl.collector;
 
-import com.judalabs.keyboardplayground.features.metrics.impl.collector.DoubleLetterBigram;
+import com.judalabs.keyboardplayground.features.metrics.impl.KeyboardLayoutSupplier;
+import com.judalabs.keyboardplayground.features.metrics.impl.NGramFreq;
 import com.judalabs.keyboardplayground.shared.layout.DefaultLayout;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
