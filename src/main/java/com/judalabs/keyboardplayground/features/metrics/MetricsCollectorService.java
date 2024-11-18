@@ -1,7 +1,8 @@
 package com.judalabs.keyboardplayground.features.metrics;
 
-import com.judalabs.keyboardplayground.features.metrics.impl.EventCollector;
 import com.judalabs.keyboardplayground.features.metrics.impl.KeyboardLayoutSupplier;
+import com.judalabs.keyboardplayground.features.metrics.impl.collector.CorpusStatsCollector;
+import com.judalabs.keyboardplayground.features.metrics.impl.collector.EventCollector;
 import com.judalabs.keyboardplayground.shared.corpus.CorpusStats;
 import com.judalabs.keyboardplayground.shared.corpus.Language;
 import com.judalabs.keyboardplayground.shared.layout.LayoutKey;

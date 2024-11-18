@@ -1,6 +1,5 @@
-package com.judalabs.keyboardplayground.features.metrics;
+package com.judalabs.keyboardplayground.features.metrics.impl.collector;
 
-import com.judalabs.keyboardplayground.features.metrics.impl.EventCollector;
 import com.judalabs.keyboardplayground.shared.corpus.LetterCount;
 
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.judalabs.keyboardplayground.features.metrics.impl;
+package com.judalabs.keyboardplayground.features.metrics.impl.collector;
 
 import com.judalabs.keyboardplayground.shared.keyboard.Finger;
 

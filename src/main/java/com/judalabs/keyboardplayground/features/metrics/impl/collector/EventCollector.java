@@ -1,4 +1,4 @@
-package com.judalabs.keyboardplayground.features.metrics.impl;
+package com.judalabs.keyboardplayground.features.metrics.impl.collector;
 
 import com.judalabs.keyboardplayground.features.metrics.CollectorListener;
 import com.judalabs.keyboardplayground.features.metrics.InputLetterListener;

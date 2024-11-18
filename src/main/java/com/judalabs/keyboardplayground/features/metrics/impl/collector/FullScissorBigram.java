@@ -1,8 +1,11 @@
-package com.judalabs.keyboardplayground.features.metrics.impl;
+package com.judalabs.keyboardplayground.features.metrics.impl.collector;
 
 import com.judalabs.keyboardplayground.features.metrics.CollectorListener;
 import com.judalabs.keyboardplayground.features.metrics.InputLetterListener;
 import com.judalabs.keyboardplayground.features.metrics.WordReadListener;
+import com.judalabs.keyboardplayground.features.metrics.impl.KeyboardLayoutSupplier;
+import com.judalabs.keyboardplayground.features.metrics.impl.NGramFreq;
+import com.judalabs.keyboardplayground.features.metrics.impl.NgramCounter;
 import com.judalabs.keyboardplayground.shared.FixedSizeDeque;
 import com.judalabs.keyboardplayground.shared.layout.CharData;
 import lombok.RequiredArgsConstructor;

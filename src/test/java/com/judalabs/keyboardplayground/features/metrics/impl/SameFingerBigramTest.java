@@ -1,5 +1,6 @@
 package com.judalabs.keyboardplayground.features.metrics.impl;
 
+import com.judalabs.keyboardplayground.features.metrics.impl.collector.SameFingerBigram;
 import com.judalabs.keyboardplayground.shared.layout.DefaultLayout;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

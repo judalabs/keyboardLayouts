@@ -1,6 +1,6 @@
 package com.judalabs.keyboardplayground.features.metrics;
 
-import com.judalabs.keyboardplayground.features.metrics.impl.EventCollector;
+import com.judalabs.keyboardplayground.features.metrics.impl.collector.EventCollector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
