@@ -15,25 +15,27 @@ import java.util.stream.Collector;
 public class CorpusStatsCollector implements Collector<Integer, CorpusStatsCollector, CorpusStatsCollector> {
 
     private final EventCollector eventCollector;
+    private final char delimiter;
 
     private Long words = 0L;
     private final Map<Integer, Long> letterCount = new HashMap<>();
     private Long totalLetters = 0L;
 
-    public CorpusStatsCollector(EventCollector eventCollector) {
+    public CorpusStatsCollector(EventCollector eventCollector, char delimiter) {
         this.eventCollector = eventCollector;
+        this.delimiter = delimiter;
         for (int letter = ' '; letter <= 'z'; letter++) {
             letterCount.put(letter, 0L);
         }
     }
 
     public void receive(int elem) {
-        if (' ' == elem) {
+        if (delimiter == elem) {
             words++;
             eventCollector.notifyNewWord();
-        } else {
+        } else if(elem != '\n') {
             eventCollector.compute(elem);
-        }
+        } else return;
         final Long count = letterCount.get(elem) + 1;
         letterCount.put(elem, count);
         totalLetters++;
@@ -64,7 +66,7 @@ public class CorpusStatsCollector implements Collector<Integer, CorpusStatsColle
 
     @Override
     public Supplier<CorpusStatsCollector> supplier() {
-        return ()-> new CorpusStatsCollector(eventCollector);
+        return ()-> new CorpusStatsCollector(eventCollector, delimiter);
     }
 
     @Override

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -16,6 +17,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 @Configuration
@@ -35,21 +40,45 @@ public class JobConfiguration {
                 .build();
     }
 
-    private Step metricsStep() {
-        return new StepBuilder("metrics", jobRepository)
+    private Step loadStep() {
+        return new StepBuilder("load", jobRepository)
                 .tasklet((contribution, chunkContext) -> {
-                    final JobParameters jobParameters = chunkContext.getStepContext().getStepExecution().getJobParameters();
-                    final String inputString = jobParameters.getString("layoutKeys");
-                    final List<LayoutKey> layoutKeys = objectMapper.readValue(inputString, new TypeReference<>() {});
-                    metricsCollectorService.processMetrics(layoutKeys);
+                    final StringBuilder content = readFile();
+                    chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().put("corpus", content.toString());
                     return RepeatStatus.FINISHED;
                 }, transactionManager)
                 .build();
     }
 
-    private Step loadStep() {
-        return new StepBuilder("load", jobRepository)
-                .tasklet((contribution, chunkContext) -> RepeatStatus.FINISHED, transactionManager)
+    private StringBuilder readFile() {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("testcorpus.txt");
+        StringBuilder content = new StringBuilder();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content;
+    }
+
+    private Step metricsStep() {
+        return new StepBuilder("metrics", jobRepository)
+                .tasklet((contribution, chunkContext) -> {
+                    final StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
+                    final JobParameters jobParameters = stepExecution.getJobExecution().getJobParameters();
+                    final String corpus = stepExecution.getJobExecution().getExecutionContext().getString("corpus");
+
+                    final String inputString = jobParameters.getString("layoutKeys");
+
+                    final List<LayoutKey> layoutKeys = objectMapper.readValue(inputString, new TypeReference<>() {});
+
+                    metricsCollectorService.processMetrics(layoutKeys, corpus);
+                    return RepeatStatus.FINISHED;
+                }, transactionManager)
                 .build();
     }
 }
